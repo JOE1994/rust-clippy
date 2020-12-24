@@ -205,6 +205,7 @@ mod fallible_impl_from;
 mod float_equality_without_abs;
 mod float_literal;
 mod floating_point_arithmetic;
+mod foo_functions;
 mod format;
 mod formatting;
 mod from_over_into;
@@ -610,6 +611,7 @@ pub fn register_plugins(store: &mut rustc_lint::LintStore, sess: &Session, conf:
         &float_literal::LOSSY_FLOAT_LITERAL,
         &floating_point_arithmetic::IMPRECISE_FLOPS,
         &floating_point_arithmetic::SUBOPTIMAL_FLOPS,
+        &foo_functions::FOO_FUNCTIONS,
         &format::USELESS_FORMAT,
         &formatting::POSSIBLE_MISSING_COMMA,
         &formatting::SUSPICIOUS_ASSIGNMENT_FORMATTING,
@@ -1215,6 +1217,7 @@ pub fn register_plugins(store: &mut rustc_lint::LintStore, sess: &Session, conf:
     store.register_late_pass(|| box strings::StrToString);
     store.register_late_pass(|| box strings::StringToString);
     store.register_late_pass(|| box zero_sized_map_values::ZeroSizedMapValues);
+    store.register_early_pass(|| box foo_functions::FooFunctions);
 
     store.register_group(true, "clippy::restriction", Some("clippy_restriction"), vec![
         LintId::of(&arithmetic::FLOAT_ARITHMETIC),
@@ -1287,6 +1290,7 @@ pub fn register_plugins(store: &mut rustc_lint::LintStore, sess: &Session, conf:
         LintId::of(&eta_reduction::REDUNDANT_CLOSURE_FOR_METHOD_CALLS),
         LintId::of(&excessive_bools::FN_PARAMS_EXCESSIVE_BOOLS),
         LintId::of(&excessive_bools::STRUCT_EXCESSIVE_BOOLS),
+        LintId::of(&foo_functions::FOO_FUNCTIONS),
         LintId::of(&functions::MUST_USE_CANDIDATE),
         LintId::of(&functions::TOO_MANY_LINES),
         LintId::of(&if_not_else::IF_NOT_ELSE),
